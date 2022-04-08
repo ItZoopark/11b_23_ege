@@ -47,30 +47,63 @@ def zero(a):
     return 2 ** size
 
 
-def check(a):
+# set(x[1:]) == {'0'}
+def isZero(a):
     x = bin(a)[2:]
-    if x[0] == '1' and set(x[1:]) == {'0'}:
+    if x[0] == '1' and sum(map(int, list(x[1:]))) == 0:
         return True
     else:
         return False
 
 
-# print(check(16))
-
-# print(set(bin(16)[3:]) == {'0'})
-
-# # ob10011 = 19
-#   10000 = 2**4
-
 def f_3717(x, y):
-    if check(x):
-        return 0
     if x == y:
         return 1
     elif x < y:
         return 0
     else:
-        return f_3717(zero(x), y) + f_3717(x - 1, y)
+        if isZero(x):
+            return f_3717(x - 1, y)
+        else:
+            return f_3717(zero(x), y) + f_3717(x - 1, y)
 
 
-print(f_3717(1000000, 1000))
+# print(f_3717(64, 8))
+
+def f_467(x, y, a, tmp):
+    if x == y:
+        a.append(tmp)
+    elif x > y:
+        return
+    else:
+        f_467(x + 1, y, a, tmp + '1')
+        f_467(x * 2, y, a, tmp + '2')
+
+
+# a = []
+# tmp = ''
+# f_467(5, 32, a, tmp)
+# count = 0
+# for item in a:
+#     if item[-2] == '1':
+#         count += 1
+# print(count)
+
+def up_rank(x):
+    digits = list(str(x))
+    for i in range(len(digits)):
+        if digits[i] != '9':
+            digits[i] = str(int(digits[i]) + 1)
+    return int(''.join(digits))
+
+
+def f_3104(x, y):
+    if x == y:
+        return 1
+    elif x > y:
+        return 0
+    else:
+        return f_3104(x + 1, y) + f_3104(up_rank(x), y)
+
+
+# print(f_3104(24, 46))
